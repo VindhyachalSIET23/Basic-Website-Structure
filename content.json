@@ -1,0 +1,12 @@
+{
+  "hero": {
+    "h4": "Welcome to Our IT Research & Development Company",
+    "h1": "Innovating the Future of Technology",
+    "p": "We are dedicated to pushing the boundaries of technology through cutting-edge research and development.",
+    "img": "hero-bg.jpg"
+  },
+  "features": [
+    { "id": 1, "title": "Advanced Research", "desc": "Exploring new frontiers.", "img": "Research.jpg" },
+    { "id": 4, "title": "AI Research", "desc": "Applying AI to complex problems.", "img": "AI.jpg" }
+  ]
+}

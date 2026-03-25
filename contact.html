@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact — IT R&D Company</title>
+  <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+  <section id="header">
+    <a href="Index.html"><img src="logo.png" alt="IT R&D Company logo" style="height:44px"></a>
+    <div>
+      <ul id="navbar">
+        <li><a href="Index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="Industries.html">Industries</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="Portfolio.html">Portfolio</a></li>
+        <li><a class="active" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <main class="section-p1">
+    <h1>Contact Us</h1>
+    <p>Reach out for consultations, partnerships, or to request a demo.</p>
+
+    <section class="section-m1">
+      <div class="contact-careers">
+
+        <!-- LEFT: Contact (cards + form + map) -->
+        <div class="left">
+          <div class="contact-cards">
+            <div class="contact-card">
+              <h3>Get in touch</h3>
+              <p>For partnerships, demos, or enquiries, reach us using the form or the contact details below.</p>
+              <ul>
+                <li><strong>Email:</strong> <a href="mailto:info@example.com">info@example.com</a></li>
+                <li><strong>Phone:</strong> +1 (555) 012-3456</li>
+                <li><strong>Address:</strong> 123 Innovation Way, City, Country</li>
+              </ul>
+            </div>
+
+            <div class="contact-card">
+              <h3>Office hours</h3>
+              <p>Mon–Fri: 9:00–18:00</p>
+              <h3>Support</h3>
+              <p><a href="mailto:support@example.com">support@example.com</a></p>
+            </div>
+          </div>
+
+          <div class="contact-form-wrap">
+            <form id="contact-form" novalidate>
+              <div class="form-row two-cols">
+                <div>
+                  <label for="name">Full name</label>
+                  <input id="name" name="name" type="text" required />
+                  <div id="err-name" class="form-error" aria-live="polite"></div>
+                </div>
+
+                <div>
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" required />
+                  <div id="err-email" class="form-error" aria-live="polite"></div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label for="phone">Phone (optional)</label>
+                <input id="phone" name="phone" type="tel" placeholder="+1 (555) 012-3456" />
+              </div>
+
+              <div class="form-row">
+                <label for="subject">Subject</label>
+                <input id="subject" name="subject" type="text" required />
+                <div id="err-subject" class="form-error" aria-live="polite"></div>
+              </div>
+
+              <div class="form-row">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+                <div id="err-message" class="form-error" aria-live="polite"></div>
+              </div>
+
+              <!-- honeypot to reduce spam -->
+              <input type="text" name="hp" class="honeypot" tabindex="-1" autocomplete="off" />
+
+              <div class="form-actions">
+                <button class="btn" id="send-btn" type="submit">Send message</button>
+                <div id="form-status" role="status" aria-live="polite" class="form-status"></div>
+              </div>
+            </form>
+
+            <div class="map" aria-hidden="false">
+              <iframe src="https://maps.google.com/?q=123+Innovation+Way&output=embed" title="Company location" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Careers (openings + apply) -->
+        <aside class="right" aria-labelledby="careers-title">
+          <h2 id="careers-title">Careers</h2>
+          <p>Join our team or apply directly for an open role below.</p>
+
+          <div class="careers-grid-column">
+            <div class="openings">
+              <h3>Open Roles</h3>
+              <ul>
+                <li><strong>Senior ML Engineer</strong> — Full-time</li>
+                <li><strong>Embedded Systems Engineer</strong> — Full-time</li>
+                <li><strong>Product Designer (R&amp;D)</strong> — Contract</li>
+                <li><strong>Data Scientist</strong> — Full-time</li>
+              </ul>
+            </div>
+
+            <div class="apply">
+              <h3>Apply Now</h3>
+              <form id="career-form" enctype="multipart/form-data">
+                <input type="text" name="applicant_name" placeholder="Full name" required />
+                <input type="email" name="applicant_email" placeholder="Email" required />
+
+                <select name="position" id="position" required>
+                  <option value="">Select a role</option>
+                  <option>Senior ML Engineer</option>
+                  <option>Embedded Systems Engineer</option>
+                  <option>Product Designer (R&amp;D)</option>
+                  <option>Data Scientist</option>
+                </select>
+
+                <label for="resume">Resume (PDF only)</label>
+                <input id="resume" type="file" accept=".pdf" required />
+
+                <textarea name="cover" placeholder="Brief cover note (optional)"></textarea>
+
+                <div style="display:flex;gap:8px;">
+                  <button class="btn" id="apply-btn" type="submit">Submit Application</button>
+                  <button class="btn ghost" id="clear-app" type="button">Clear</button>
+                </div>
+              </form>
+              <div id="career-msg" aria-live="polite" style="margin-top:8px;color:#0a8a3b"></div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- footer -->
+  <footer id="footer" role="contentinfo"> (see Index.html for footer content) </footer>
+
+  <script>
+    (function(){
+      // CONTACT FORM — client-side validation and demo submission
+      const contactForm = document.getElementById('contact-form');
+      const statusEl = document.getElementById('form-status');
+      const sendBtn = document.getElementById('send-btn');
+
+      function setStatus(msg, ok){
+        statusEl.textContent = msg || '';
+        statusEl.style.color = ok ? '#0a8a3b' : '#d9534f';
+        if(msg){ statusEl.setAttribute('tabindex', '-1'); statusEl.focus(); }
+      }
+
+      function validateContact(){
+        let ok = true;
+        // name
+        const name = contactForm.querySelector('[name="name"]');
+        const email = contactForm.querySelector('[name="email"]');
+        const subject = contactForm.querySelector('[name="subject"]');
+        const message = contactForm.querySelector('[name="message"]');
+
+        // clear errors
+        document.getElementById('err-name').textContent = '';
+        document.getElementById('err-email').textContent = '';
+        document.getElementById('err-subject').textContent = '';
+        document.getElementById('err-message').textContent = '';
+
+        if(!name.value.trim()) { document.getElementById('err-name').textContent = 'Please enter your name.'; ok = false; }
+        if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value.trim())) { document.getElementById('err-email').textContent = 'Enter a valid email address.'; ok = false; }
+        if(!subject.value.trim()) { document.getElementById('err-subject').textContent = 'Please enter a subject.'; ok = false; }
+        if(!message.value.trim() || message.value.trim().length < 8) { document.getElementById('err-message').textContent = 'Message must be at least 8 characters.'; ok = false; }
+
+        return ok;
+      }
+
+      contactForm?.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(!validateContact()) { setStatus('Please fix the errors above and try again.'); return; }
+
+        // check honeypot
+        if(contactForm.querySelector('.honeypot')?.value){
+          // likely spam — acknowledge silently
+          setStatus('Thanks — your message was received.');
+          contactForm.reset();
+          return;
+        }
+
+        // disable submit and show sending state
+        sendBtn.disabled = true;
+        const old = sendBtn.textContent;
+        sendBtn.textContent = 'Sending...';
+
+        // Simulate sending: store submission locally (demo) and optionally POST to an endpoint
+        const data = {
+          name: contactForm.name.value.trim(),
+          email: contactForm.email.value.trim(),
+          phone: contactForm.phone.value.trim(),
+          subject: contactForm.subject.value.trim(),
+          message: contactForm.message.value.trim(),
+          date: new Date().toISOString()
+        };
+
+        // demo persistence
+        const saved = JSON.parse(localStorage.getItem('contact_submissions') || '[]');
+        saved.push(data);
+        localStorage.setItem('contact_submissions', JSON.stringify(saved));
+
+        // If you have a Formspree or webhook, you can send it here. Example (uncomment and set URL):
+        // fetch('https://formspree.io/f/your-id', { method: 'POST', body: new FormData(contactForm) })
+        //   .then(()=>{ /* success */ })
+        //   .catch(()=>{ /* failure */ });
+
+        setTimeout(()=>{
+          sendBtn.disabled = false;
+          sendBtn.textContent = old;
+          setStatus('Thanks! Your message has been sent (demo only).', true);
+          contactForm.reset();
+        }, 900);
+      });
+
+      // CAREER FORM — keep existing behavior (validates PDF and stores a record)
+      (function(){
+        const careerForm = document.getElementById('career-form');
+        const msg = document.getElementById('career-msg');
+        if(!careerForm) return;
+
+        careerForm.addEventListener('submit', function(e){
+          e.preventDefault();
+          const name = this.querySelector('[name=applicant_name]').value.trim();
+          const email = this.querySelector('[name=applicant_email]').value.trim();
+          const position = this.querySelector('[name=position]').value;
+          const resumeInput = this.querySelector('#resume');
+
+          if(!resumeInput.files || resumeInput.files.length === 0){
+            msg.textContent = 'Please attach a PDF resume.';
+            msg.style.color = '#d9534f';
+            return;
+          }
+
+          const file = resumeInput.files[0];
+          if(file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')){
+            msg.textContent = 'Resume must be a PDF file.';
+            msg.style.color = '#d9534f';
+            return;
+          }
+
+          // demo persistence: save minimal record to localStorage
+          const record = {name, email, position, resumeName: file.name, date: new Date().toISOString()};
+          const saved = JSON.parse(localStorage.getItem('career_apps')||'[]');
+          saved.push(record);
+          localStorage.setItem('career_apps', JSON.stringify(saved));
+
+          msg.textContent = 'Thanks! Your application has been recorded (demo only).';
+          msg.style.color = '#0a8a3b';
+          this.reset();
+        });
+
+        document.getElementById('clear-app')?.addEventListener('click', function(){
+          careerForm.reset();
+          msg.textContent = '';
+        });
+      })();
+
+    })();
+  </script>
+</body>
+</html>

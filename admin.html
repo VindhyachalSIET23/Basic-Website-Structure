@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | IT R&D</title>
+    <link rel="stylesheet" href="Style.css"> <style>
+        body { display: flex; background: #f4f7f6; }
+        #sidebar { width: 250px; height: 100vh; background: #222; color: #fff; padding: 20px; }
+        #main-content { flex: 1; padding: 40px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; background: #fff; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        .btn-delete { color: #ff4d4d; cursor: pointer; border: none; background: none; }
+    </style>
+</head>
+<body>
+
+    <section id="sidebar">
+        <h2>RD-Admin</h2>
+        <ul style="list-style: none; padding: 0; margin-top: 40px;">
+            <li style="margin-bottom: 15px;"><a href="#" style="color: #088178; text-decoration: none;">Dashboard</a></li>
+            <li style="margin-bottom: 15px;"><a href="#" style="color: #fff; text-decoration: none;">Case Studies</a></li>
+            <li style="margin-bottom: 15px;"><a href="#" style="color: #fff; text-decoration: none;">Subscribers</a></li>
+            <li style="margin-bottom: 15px;"><a href="Index.html" style="color: #fff; text-decoration: none;">View Site</a></li>
+        </ul>
+    </section>
+
+    <section id="main-content">
+        <h1>Research Dashboard</h1>
+        
+        <div class="stats-grid">
+            <div class="stat-card"><h3>Total Leads</h3><p id="lead-count">1,240</p></div>
+            <div class="stat-card"><h3>Active R&D</h3><p>14 Projects</p></div>
+            <div class="stat-card"><h3>Success Rate</h3><p>94%</p></div>
+        </div>
+
+        <h3>Recent Newsletter Signups</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email Address</th>
+                    <th>Date Joined</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="subscriber-table">
+                </tbody>
+        </table>
+    </section>
+
+    <script>
+        // Fetch and display subscribers
+        async function loadSubscribers() {
+            const response = await fetch('/admin/subscribers');
+            const data = await response.json();
+            const tableBody = document.getElementById('subscriber-table');
+            
+            tableBody.innerHTML = data.map(sub => `
+                <tr>
+                    <td>${sub.id}</td>
+                    <td>${sub.email}</td>
+                    <td>${sub.date}</td>
+                    <td><button class="btn-delete" onclick="deleteSub(${sub.id})">Remove</button></td>
+                </tr>
+            `).join('');
+        }
+
+        async function deleteSub(id) {
+            if(confirm('Delete this subscriber?')) {
+                await fetch(`/admin/subscribers/${id}`, { method: 'DELETE' });
+                loadSubscribers();
+            }
+        }
+
+        loadSubscribers();
+    </script>
+</body>
+</html>
+<section id="content-editor" style="background: #fff; padding: 20px; border-radius: 8px; margin-top: 20px;">
+    <h2>Edit Website Content</h2>
+    
+    <div class="edit-group" style="margin-bottom: 15px;">
+        <label>Hero Heading (H1):</label><br>
+        <input type="text" id="edit-h1" style="width: 100%; padding: 8px;">
+    </div>
+
+    <div class="edit-group" style="margin-bottom: 15px;">
+        <label>Hero Description:</label><br>
+        <textarea id="edit-p" style="width: 100%; height: 60px;"></textarea>
+    </div>
+
+    <div class="edit-group" style="margin-bottom: 15px;">
+        <label>Hero Image Filename:</label><br>
+        <input type="text" id="edit-img" placeholder="e.g., logo.png" style="width: 100%; padding: 8px;">
+    </div>
+
+    <button onclick="publishChanges()" style="background: #088178; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 4px;">
+        Publish to Live Site
+    </button>
+</section>
+
+<script>
+    // Load existing content into the editor
+    async function initEditor() {
+        const res = await fetch('/api/content');
+        const data = await res.json();
+        document.getElementById('edit-h1').value = data.hero.h1;
+        document.getElementById('edit-p').value = data.hero.p;
+        document.getElementById('edit-img').value = data.hero.img;
+    }
+
+    async function publishChanges() {
+        const updated = {
+            hero: {
+                h4: "Welcome to Our IT Research & Development Company",
+                h1: document.getElementById('edit-h1').value,
+                p: document.getElementById('edit-p').value,
+                img: document.getElementById('edit-img').value
+            }
+        };
+
+        const res = await fetch('/api/update-content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updated)
+        });
+
+        if (res.ok) alert("Live site updated!");
+    }
+
+    initEditor();
+</script>
+
+<section id="content-editor" style="background: #fff; padding: 20px; border-radius: 8px; margin-top: 20px;">
+    <h2>Edit Website Content</h2>
+    
+    <div class="edit-group" style="margin-bottom: 15px;">
+        <label>Hero Heading (H1):</label><br>
+        <input type="text" id="edit-h1" style="width: 100%; padding: 8px;">
+    </div>
+
+    <div class="edit-group" style="margin-bottom: 15px;">
+        <label>Hero Description:</label><br>
+        <textarea id="edit-p" style="width: 100%; height: 60px;"></textarea>
+    </div>
+
+    <div class="edit-group" style="margin-bottom: 15px;">
+        <label>Hero Image Filename:</label><br>
+        <input type="text" id="edit-img" placeholder="e.g., logo.png" style="width: 100%; padding: 8px;">
+    </div>
+
+    <button onclick="publishChanges()" style="background: #088178; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 4px;">
+        Publish to Live Site
+    </button>
+</section>
+
+<script>
+    // Load existing content into the editor
+    async function initEditor() {
+        const res = await fetch('/api/content');
+        const data = await res.json();
+        document.getElementById('edit-h1').value = data.hero.h1;
+        document.getElementById('edit-p').value = data.hero.p;
+        document.getElementById('edit-img').value = data.hero.img;
+    }
+
+    async function publishChanges() {
+        const updated = {
+            hero: {
+                h4: "Welcome to Our IT Research & Development Company",
+                h1: document.getElementById('edit-h1').value,
+                p: document.getElementById('edit-p').value,
+                img: document.getElementById('edit-img').value
+            }
+        };
+
+        const res = await fetch('/api/update-content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updated)
+        });
+
+        if (res.ok) alert("Live site updated!");
+    }
+
+    initEditor();
+</script>
